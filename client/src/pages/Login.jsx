@@ -1,13 +1,40 @@
 import { Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      const res = await fetch("/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        toast.success(data.message);
+        toast("Redirect to Home page");
+        localStorage.setItem("token", data.data);
+        navigate("/");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(error);
+    }
+  };
   return (
     <div className="authentication min-h-screen bg-gradient-to-r from-violet-200 to-pink-200 flex justify-center items-center">
       <div className="authentication-form card bg-white p-4 rounded w-[450px] ">
         <h1 className="text-center bg-orange-500 text-white p-2 rounded font-bold">
           Welcome Back
         </h1>
-        <Form className="mt-4" layout="vertical">
+        <Form onFinish={onFinish} className="mt-4" layout="vertical">
           <Form.Item label="Email" name="email">
             <Input placeholder="Email" type="email" />
           </Form.Item>
