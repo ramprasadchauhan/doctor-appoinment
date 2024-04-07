@@ -2,7 +2,11 @@ import { Form, Input } from "antd";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { hideLoading, showLoading } from "../redux/alertSlice";
 const Register = () => {
+  const { loading } = useSelector((state) => state.alerts);
+  const dispatch = useDispatch();
   const rules = [
     {
       required: true,
@@ -12,6 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
+      dispatch(showLoading());
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
@@ -19,6 +24,7 @@ const Register = () => {
         },
         body: JSON.stringify(values),
       });
+      dispatch(hideLoading());
       const data = await res.json();
       console.log(data);
       if (data.success) {
@@ -29,6 +35,7 @@ const Register = () => {
         toast.error(data.message);
       }
     } catch (error) {
+      dispatch(hideLoading());
       toast.error("Something went wrong");
       console.log(error);
     }
