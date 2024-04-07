@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Form, Input } from "antd";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
