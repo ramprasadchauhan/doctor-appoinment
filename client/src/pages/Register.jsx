@@ -3,10 +3,16 @@ import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 const Register = () => {
+  const rules = [
+    {
+      required: true,
+      message: "required",
+    },
+  ];
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
-      const res = await fetch("/api/user/register", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,13 +40,13 @@ const Register = () => {
           Nice To meet You
         </h1>
         <Form onFinish={onFinish} className="mt-4" layout="vertical">
-          <Form.Item label="Name" name="name">
+          <Form.Item label="Name" name="name" rules={rules}>
             <Input placeholder="Name" />
           </Form.Item>
-          <Form.Item label="Email" name="email">
+          <Form.Item label="Email" name="email" rules={rules}>
             <Input placeholder="Email" type="email" />
           </Form.Item>
-          <Form.Item label="Password" name="password">
+          <Form.Item label="Password" name="password" rules={rules}>
             <Input placeholder="Password" type="password" />
           </Form.Item>
           <button

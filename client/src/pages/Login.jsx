@@ -3,10 +3,16 @@ import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const rules = [
+    {
+      required: true,
+      message: "required",
+    },
+  ];
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
-      const res = await fetch("/api/user/login", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,10 +41,10 @@ const Login = () => {
           Welcome Back
         </h1>
         <Form onFinish={onFinish} className="mt-4" layout="vertical">
-          <Form.Item label="Email" name="email">
+          <Form.Item label="Email" name="email" rules={rules}>
             <Input placeholder="Email" type="email" />
           </Form.Item>
-          <Form.Item label="Password" name="password">
+          <Form.Item label="Password" name="password" rules={rules}>
             <Input placeholder="Password" type="password" />
           </Form.Item>
           <button
