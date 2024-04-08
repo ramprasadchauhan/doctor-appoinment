@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 export const getUserInfoById = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.userId });
+    const { password, ...rest } = user._doc;
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -11,10 +12,7 @@ export const getUserInfoById = async (req, res) => {
       res.status(200).json({
         success: true,
         message: "User successfully fetch",
-        data: {
-          name: user.name,
-          email: user.email,
-        },
+        data: rest,
       });
     }
   } catch (error) {

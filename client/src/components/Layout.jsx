@@ -1,9 +1,13 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Layout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
   const userMenu = [
     {
       name: "Home",
@@ -25,11 +29,6 @@ const Layout = ({ children }) => {
       path: "/profile",
       icon: "ri-user-line",
     },
-    {
-      name: "Logout",
-      path: "/logout",
-      icon: "ri-login-box-line",
-    },
   ];
 
   const doctorMenu = [
@@ -43,12 +42,11 @@ const Layout = ({ children }) => {
       path: "/doctor/appointments",
       icon: "ri-file-list-line",
     },
-    // {
-    //   name: "Profile",
-    //   path: `/doctor/profile/${user?._id}`,
-
-    //   icon: "ri-user-line",
-    // },
+    {
+      name: "Profile",
+      path: `/doctor/profile/${user?._id}`,
+      icon: "ri-user-line",
+    },
   ];
 
   const adminMenu = [
@@ -60,7 +58,7 @@ const Layout = ({ children }) => {
     {
       name: "Users",
       path: "/admin/userslist",
-      icon: "ri-user-line",
+      icon: "ri-group-line",
     },
     {
       name: "Doctors",
@@ -73,8 +71,9 @@ const Layout = ({ children }) => {
       icon: "ri-user-line",
     },
   ];
-  const menuToBeRendered = userMenu;
+  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
   console.log(collapsed);
+  console.log(user);
   return (
     <div className="main">
       <div className="flex w-full ">
@@ -105,17 +104,36 @@ const Layout = ({ children }) => {
                   </Link>
                 );
               })}
+              <div
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/login");
+                }}
+                className="menu-item cursor-pointer hover:bg-gray-100 flex gap-5 my-10 px-4 py-2  transition duration-200 ease-in-out rounded-lg"
+              >
+                <i className="ri-login-box-line"></i>
+                <p className={`${collapsed ? "hidden" : "block"}`}>Logout</p>
+              </div>
             </div>
           </div>
         </div>
         <div className="content flex-1">
-          <div className="header bg-white shadow-lg mb-5 h-14 flex items-center justify-between w-full sticky top-0">
+          <div className="header bg-white shadow-lg mb-5 h-14 flex items-center px-4 justify-between w-full sticky top-0">
             <i
               onClick={() => setCollapsed(!collapsed)}
               className={`${
                 collapsed ? "ri-menu-line" : "ri-close-line"
               } font-semibold cursor-pointer pl-2 text-2xl hover:scale-110`}
             ></i>
+            <div className="flex items-center gap-2">
+              <i className="ri-notification-line font-semibold cursor-pointer pl-2 text-2xl hover:scale-110"></i>
+              <Link
+                to="/profile"
+                className="hover:text-pink-500 transition duration-200"
+              >
+                {user?.name}
+              </Link>
+            </div>
           </div>
           <div className="body"> {children}</div>
         </div>
