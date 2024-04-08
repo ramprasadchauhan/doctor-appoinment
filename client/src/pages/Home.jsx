@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Layout from "../components/Layout";
 
 const Home = () => {
   const getData = async () => {
@@ -18,7 +19,13 @@ const Home = () => {
   useEffect(() => {
     getData();
   }, []);
-  return <div>Home</div>;
+  return (
+    <div className="min-h-screen">
+      <Layout>
+        <div>HomePage</div>
+      </Layout>
+    </div>
+  );
 };
 
 export default Home;
