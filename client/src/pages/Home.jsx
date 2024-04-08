@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       <Layout>
-        <div>HomePage</div>
+        <div>Apply Doctor</div>
       </Layout>
     </div>
   );

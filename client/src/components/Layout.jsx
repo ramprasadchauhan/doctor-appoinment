@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Badge } from "antd";
 
 const Layout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -71,7 +72,11 @@ const Layout = ({ children }) => {
       icon: "ri-user-line",
     },
   ];
-  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
+  const menuToBeRendered = user?.isAdmin
+    ? adminMenu
+    : user?.isDoctor
+    ? doctorMenu
+    : userMenu;
   console.log(collapsed);
   console.log(user);
   return (
@@ -126,7 +131,12 @@ const Layout = ({ children }) => {
               } font-semibold cursor-pointer pl-2 text-2xl hover:scale-110`}
             ></i>
             <div className="flex items-center gap-2">
-              <i className="ri-notification-line font-semibold cursor-pointer pl-2 text-2xl hover:scale-110"></i>
+              <Badge
+                count={user?.unSeenNotification?.length}
+                // onClick={() => navigate("/notifications")}
+              >
+                <i className="ri-notification-line font-semibold cursor-pointer pl-2 text-2xl hover:scale-110"></i>
+              </Badge>
               <Link
                 to="/profile"
                 className="hover:text-pink-500 transition duration-200"
@@ -135,7 +145,7 @@ const Layout = ({ children }) => {
               </Link>
             </div>
           </div>
-          <div className="body"> {children}</div>
+          <div className="body px-4"> {children}</div>
         </div>
       </div>
     </div>
