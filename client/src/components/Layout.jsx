@@ -133,7 +133,7 @@ const Layout = ({ children }) => {
             <div className="flex items-center gap-2">
               <Badge
                 count={user?.unSeenNotification?.length}
-                // onClick={() => navigate("/notifications")}
+                onClick={() => navigate("/notifications")}
               >
                 <i className="ri-notification-line font-semibold cursor-pointer pl-2 text-2xl hover:scale-110"></i>
               </Badge>

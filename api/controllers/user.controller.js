@@ -56,3 +56,51 @@ export const applyDoctorAccount = async (req, res) => {
     });
   }
 };
+
+export const markAllNotificationAsSeen = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+    const unSeenNotification = user.unSeenNotification;
+    const seenNotification = user.seenNotification;
+    seenNotification.push(...unSeenNotification);
+    user.unSeenNotification = [];
+    user.seenNotification = seenNotification;
+    const updatedUser = await User.findByIdAndUpdate(user._id, user);
+    res.status(200).json({
+      success: true,
+      message: "All notification mark as seen",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log("error in markAllNotificationAsSeen controller");
+    return res.status(500).json({
+      success: false,
+      message: "Error getting markAllNotificationAsSeen",
+      error,
+    });
+  }
+};
+
+export const deleteAllNotification = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+
+    user.seenNotification = [];
+
+    user.unSeenNotification = [];
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "All notification deleted",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log("error in deleteAllNotification controller");
+    return res.status(500).json({
+      success: false,
+      message: "Error getting deleteAllNotification",
+      error,
+    });
+  }
+};

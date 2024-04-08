@@ -36,11 +36,11 @@ const ProtectedRoute = (props) => {
     }
   };
   useEffect(() => {
-    // if (!user) {
-    //   getUser();
-    // }
-    getUser();
-  }, []);
+    if (!user) {
+      getUser();
+    }
+    // getUser();
+  }, [user]);
 
   console.log(user);
 
