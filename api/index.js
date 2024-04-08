@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import dbConnection from "./config/dbConfig.js";
 import authRoute from "./routes/auth.route.js";
 import userRoute from "./routes/user.route.js";
+import adminRoute from "./routes/admin.route.js";
+import doctorRoute from "./routes/doctor.route.js";
 
 dotenv.config();
 const app = express();
@@ -10,7 +12,8 @@ app.use(express.json());
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
-// app.use("/api/doctor", doctorRoute)
+app.use("/api/doctor", doctorRoute);
+app.use("/api/admin", adminRoute);
 
 const PORT = process.env.PORT || 8000;
 
