@@ -38,3 +38,31 @@ export const getAllDoctors = async (req, res) => {
     });
   }
 };
+
+export const changeDoctorStatus = async (req, res) => {
+  try {
+    const { doctorId, status } = req.body;
+    const doctor = await Doctors.findByIdAndUpdate(doctorId, { status });
+    const user = await User.findOne({ _id: doctor.userId });
+    const unSeenNotification = user.unSeenNotification;
+    unSeenNotification.push({
+      type: "new-doctor-request-changed",
+      message: `Your doctor account has been ${status} `,
+      onClickPath: "/notifications",
+    });
+    user.isDoctor = status === "approved" ? true : false;
+    await user.save();
+    res.status(200).json({
+      message: "Doctor status update successfully",
+      success: true,
+      data: doctor,
+    });
+  } catch (error) {
+    console.log("error in changeDoctorStatus controller");
+    return res.status(500).json({
+      success: false,
+      message: "Error getting changeDoctorStatus",
+      error,
+    });
+  }
+};
