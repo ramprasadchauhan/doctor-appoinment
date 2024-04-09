@@ -79,6 +79,7 @@ const Layout = ({ children }) => {
     : userMenu;
   console.log(collapsed);
   console.log(user);
+  const roll = user?.isAdmin ? "Admin" : user?.isDoctor ? "Doctor" : "User";
   return (
     <div className="main">
       <div className="flex w-full ">
@@ -90,6 +91,7 @@ const Layout = ({ children }) => {
                 src="https://img.freepik.com/free-vector/medical-video-call-consultation-illustration_88138-415.jpg?w=740&t=st=1712514492~exp=1712515092~hmac=9f754cca6fe65cbc370b7fee2b3aa15305f5b9e4aebf4a8fa70d9c79a1cf4831"
                 alt="doctor"
               />
+              <h1>{roll}</h1>
             </div>
             <div className="menu min-h-screen">
               {menuToBeRendered.map((menu) => {

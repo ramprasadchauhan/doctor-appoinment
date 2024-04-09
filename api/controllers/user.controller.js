@@ -39,7 +39,7 @@ export const applyDoctorAccount = async (req, res) => {
         doctorId: newDoctor._id,
         name: newDoctor.firstName + " " + newDoctor.lastName,
       },
-      onClickPath: "/admin/doctors",
+      onClickPath: "/admin/doctorslist",
     });
     await User.findByIdAndUpdate(adminUser._id, { unSeenNotification });
     res.status(200).send({

@@ -31,7 +31,7 @@ const Login = () => {
       console.log(data);
       if (data.success) {
         toast.success(data.message);
-        toast("Redirect to Home page");
+
         localStorage.setItem("token", data.data);
         navigate("/");
       } else {

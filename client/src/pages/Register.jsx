@@ -30,7 +30,7 @@ const Register = () => {
       console.log(data);
       if (data.success) {
         toast.success(data.message);
-        toast("Redirect to login page");
+
         navigate("/login");
       } else {
         toast.error(data.message);
